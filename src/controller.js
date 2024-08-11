@@ -26,6 +26,21 @@ class LibroController{
             res.status(500).send('Error en el servidor');
         }
     }
+
+     // Agregar un nuevo libro
+  async add(req, res) {
+    const { nombre, autor, categoria, año_publicacion, ISBN } = req.body;
+    try {
+      const [result] = await pool.query(
+        'INSERT INTO Libros (nombre, autor, categoria, año_publicacion, ISBN) VALUES (?, ?, ?, ?, ?)',
+        [nombre, autor, categoria, año_publicacion, ISBN]
+      );
+      res.status(201).json({ "Id insertado": result.insertId });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error en el servidor');
+    }
+  }
 }
 
 export const libro = new LibroController();
